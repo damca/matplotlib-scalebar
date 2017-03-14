@@ -23,9 +23,9 @@ The following parameters are available for customization in the matplotlibrc:
     - scalebar.box_alpha
     - scalebar.scale_loc
     - scalebar.label_loc
-    
-See the class documentation (:class:`.Scalebar`) for a description of the 
-parameters. 
+
+See the class documentation (:class:`.Scalebar`) for a description of the
+parameters.
 """
 
 __all__ = ['ScaleBar',
@@ -60,23 +60,20 @@ validate_scale_loc = ValidateInStrings('scale_loc', ['bottom', 'top', 'right', '
                                        ignorecase=True)
 validate_label_loc = ValidateInStrings('label_loc', ['bottom', 'top', 'right', 'left'],
                                        ignorecase=True)
+Params = {'scalebar.length_fraction': validate_float(0.2),
+     'scalebar.height_fraction': validate_float(0.01),
+     'scalebar.location': validate_legend_loc('upper right'),
+     'scalebar.pad': validate_float(0.2),
+     'scalebar.border_pad': validate_float(0.1),
+     'scalebar.sep': validate_float(5),
+     'scalebar.frameon': validate_bool(True),
+     'scalebar.color': validate_color('k'),
+     'scalebar.box_color': validate_color('w'),
+     'scalebar.box_alpha': validate_float(1.0),
+     'scalebar.scale_loc': validate_scale_loc('bottom'),
+     'scalebar.label_loc': validate_label_loc('top'),
+     }
 
-defaultParams.update(
-    {'scalebar.length_fraction': [0.2, validate_float],
-     'scalebar.height_fraction': [0.01, validate_float],
-     'scalebar.location': ['upper right', validate_legend_loc],
-     'scalebar.pad': [0.2, validate_float],
-     'scalebar.border_pad': [0.1, validate_float],
-     'scalebar.sep': [5, validate_float],
-     'scalebar.frameon': [True, validate_bool],
-     'scalebar.color': ['k', validate_color],
-     'scalebar.box_color': ['w', validate_color],
-     'scalebar.box_alpha': [1.0, validate_float],
-     'scalebar.scale_loc': ['bottom', validate_scale_loc],
-     'scalebar.label_loc': ['top', validate_label_loc],
-     })
-
-# Recreate the validate function
 matplotlib.rcParams.validate = \
     dict((key, converter) for key, (default, converter) in
          six.iteritems(defaultParams)
@@ -116,74 +113,74 @@ class ScaleBar(Artist):
                  scale_loc=None, label_loc=None, font_properties=None):
         """
         Creates a new scale bar.
-        
+
         :arg dx: size of one pixel in *units*
             Set ``dx`` to 1.0 if the axes image has already been calibrated by
             setting its ``extent``.
         :type dx: :class:`float`
-            
+
         :arg units: units of *dx* (default: ``m``)
         :type units: :class:`str`
-        
-        :arg dimension: dimension of *dx* and *units*. 
-            It can either be equal 
+
+        :arg dimension: dimension of *dx* and *units*.
+            It can either be equal
                 * ``:const:`SI_LENGTH```: scale bar showing km, m, cm, etc.
                 * ``:const:`IMPERIAL_LENGTH```: scale bar showing in, ft, yd, mi, etc.
                 * ``:const:`SI_LENGTH_RECIPROCAL```: scale bar showing 1/m, 1/cm, etc.
                 * a :class:`matplotlib_scalebar.dimension._Dimension` object
-        :type dimension: :class:`str` or 
+        :type dimension: :class:`str` or
             :class:`matplotlib_scalebar.dimension._Dimension`
-                
-        :arg label: optional label associated with the scale bar 
+
+        :arg label: optional label associated with the scale bar
             (default: ``None``, no label is shown)
         :type label: :class:`str`
-            
-        :arg length_fraction: length of the scale bar as a fraction of the 
-            axes's width (default: rcParams['scalebar.lenght_fraction'] or ``0.2``)
+
+        :arg length_fraction: length of the scale bar as a fraction of the
+            axes's width (default: Params['scalebar.lenght_fraction'] or ``0.2``)
         :type length_fraction: :class:`float`
-            
-        :arg height_fraction: height of the scale bar as a fraction of the 
-            axes's height (default: rcParams['scalebar.height_fraction'] or ``0.01``)
+
+        :arg height_fraction: height of the scale bar as a fraction of the
+            axes's height (default: Params['scalebar.height_fraction'] or ``0.01``)
         :type length_fraction: :class:`float`
-            
+
         :arg location: a location code (same as legend)
-            (default: rcParams['scalebar.location'] or ``upper right``)
+            (default: Params['scalebar.location'] or ``upper right``)
         :type location: :class:`str`
-            
+
         :arg pad: fraction of the font size
-            (default: rcParams['scalebar.pad'] or ``0.2``)
+            (default: Params['scalebar.pad'] or ``0.2``)
         :type pad: :class:`float`
-            
+
         :arg border_pad : fraction of the font size
-            (default: rcParams['scalebar.border_pad'] or ``0.1``)
+            (default: Params['scalebar.border_pad'] or ``0.1``)
         :type border_pad: :class:`float`
-            
+
         :arg sep : separation between scale bar and label in points
-            (default: rcParams['scalebar.sep'] or ``5``)
+            (default: Params['scalebar.sep'] or ``5``)
         :type sep: :class:`float`
-            
-        :arg frameon : if True, will draw a box around the scale bar 
-            and label (default: rcParams['scalebar.frameon'] or ``True``)
+
+        :arg frameon : if True, will draw a box around the scale bar
+            and label (default: Params['scalebar.frameon'] or ``True``)
         :type frameon: :class:`bool`
-            
+
         :arg color : color for the scale bar and label
-            (default: rcParams['scalebar.color'] or ``k``)
+            (default: Params['scalebar.color'] or ``k``)
         :type color: :class:`str`
-            
+
         :arg box_color: color of the box (if *frameon*)
-            (default: rcParams['scalebar.box_color'] or ``w``)
+            (default: Params['scalebar.box_color'] or ``w``)
         :type box_color: :class:`str`
-            
+
         :arg box_alpha: transparency of box
-            (default: rcParams['scalebar.box_alpha'] or ``1.0``)
+            (default: Params['scalebar.box_alpha'] or ``1.0``)
         :type box_alpha: :class:`float`
-            
+
         :arg scale_loc : either ``bottom``, ``top``, ``left``, ``right``
-            (default: rcParams['scalebar.scale_loc'] or ``bottom``)
+            (default: Params['scalebar.scale_loc'] or ``bottom``)
         :type scale_loc: :class:`str`
-            
+
         :arg label_loc: either ``bottom``, ``top``, ``left``, ``right``
-            (default: rcParams['scalebar.label_loc'] or ``top``)
+            (default: Params['scalebar.label_loc'] or ``top``)
         :type label_loc: :class:`str`
 
         :arg font_properties: font properties of the label text, specified
@@ -244,12 +241,12 @@ class ScaleBar(Artist):
             return
 
         # Get parameters
-        from matplotlib import rcParams # late import
+        # from matplotlib import rcParams # late import
 
         def _get_value(attr, default):
             value = getattr(self, attr)
             if value is None:
-                value = rcParams.get('scalebar.' + attr, default)
+                value = Params.get('scalebar.' + attr, default)
             return value
 
         length_fraction = _get_value('length_fraction', 0.2)
