@@ -110,7 +110,7 @@ class ScaleBar(Artist):
                  length_fraction=None, height_fraction=None,
                  location=None, pad=None, border_pad=None, sep=None,
                  frameon=None, color=None, box_color=None, box_alpha=None,
-                 scale_loc=None, label_loc=None, font_properties=None):
+                 scale_loc=None, label_loc=None, font_properties=None, **osetkwargs):
         """
         Creates a new scale bar.
 
@@ -207,6 +207,7 @@ class ScaleBar(Artist):
         self.box_alpha = box_alpha
         self.scale_loc = scale_loc
         self.label_loc = label_loc
+        self.osetkwargs = osetkwargs
         if font_properties is None:
             font_properties = FontProperties()
         elif isinstance(font_properties, dict):
@@ -264,6 +265,7 @@ class ScaleBar(Artist):
         scale_loc = _get_value('scale_loc', 'bottom')
         label_loc = _get_value('label_loc', 'top')
         font_properties = self.font_properties
+        osetkwargs = self.osetkwargs
 
         if font_properties is None:
             textprops = {'color': color}
@@ -321,7 +323,8 @@ class ScaleBar(Artist):
                                 pad=pad,
                                 borderpad=border_pad,
                                 child=child,
-                                frameon=frameon)
+                                frameon=frameon, 
+                                **osetkwargs)
 
         box.axes = ax
         box.set_figure(self.get_figure())
